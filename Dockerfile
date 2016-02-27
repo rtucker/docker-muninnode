@@ -12,6 +12,7 @@ RUN git clone https://github.com/rtucker/munin-plugins.git
 
 ADD munin-startup.sh /
 ADD munin-node.conf /etc/munin/
+ADD snmp /etc/munin/plugin-conf.d/
 
 RUN /bin/sh /munin-startup.sh
 

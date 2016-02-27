@@ -1,0 +1,8 @@
+[snmp_budlight*]
+env.community public
+env.version 1
+env.ifTypeOnly ethernetCsmacd
+
+[snmp_milwaukees-best*]
+env.version 1
+env.community public
