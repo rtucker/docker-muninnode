@@ -1,0 +1,17 @@
+#!/bin/sh
+
+NAME=MUNIN-SNMP
+
+if [ "$1" = "killit" ]
+then
+    sudo docker kill $NAME
+    sudo docker rm $NAME
+fi
+
+sudo docker run --detach --name $NAME --publish=49499:4949 \
+	--add-host=coors:192.168.1.1 \
+	--add-host=hap-ce2580:192.168.1.23 \
+	--add-host=hap-487f95:192.168.1.24 \
+	--add-host=budlight:192.168.1.6 \
+	--add-host=milwaukees-best:192.168.1.18 \
+	munin-snmp
