@@ -3,12 +3,27 @@
 . config.sh
 
 IFINDEXOID=".1.3.6.1.2.1.2.2.1.1"   # IF-MIB::ifIndex
+IFTYPEOID=".1.3.6.1.2.1.2.2.1.3"    # IF-MIB::ifType
 
 ifindexes(){
     local h=$1
     [ -z "$h" ] && return 1
+    local ver=$(get_snmp_ver $h)
+    [ -z "$ver" ] && return 2
 
-    snmpwalk -OE -Oq $(get_snmp_ver $h) -c public $h $IFINDEXOID | cut -d' ' -f2 | xargs
+    snmpwalk -OE -Oq $ver -c public $h $IFINDEXOID | cut -d' ' -f2 | xargs
+}
+
+iftype(){
+    local h=$1
+    [ -z "$h" ] && return 1
+    local idx=$2
+    [ -z "$idx" ] && return 1
+
+    local ver=$(get_snmp_ver $h)
+    [ -z "$ver" ] && return 2
+
+    snmpget -OE -Oq $ver -c public $h ${IFTYPEOID}.${idx} | cut -d' ' -f2
 }
 
 echo "Configuring temporary DNS..."
@@ -25,8 +40,12 @@ do
     echo -n " ${host}"
     for n in $(ifindexes $host)
     do
-        ln -s /usr/share/munin/plugins/snmp__if_            /etc/munin/plugins/snmp_${host}_if_${n}
-        ln -s /usr/share/munin/plugins/snmp__if_err_        /etc/munin/plugins/snmp_${host}_if_err_${n}
+        # filter out l2vlan because it doesn't work right with munin
+        if [ "$(iftype $host $n)" -ne "135" ]
+        then
+            ln -s /usr/share/munin/plugins/snmp__if_            /etc/munin/plugins/snmp_${host}_if_${n}
+            ln -s /usr/share/munin/plugins/snmp__if_err_        /etc/munin/plugins/snmp_${host}_if_err_${n}
+        fi
     done
 
     ln -s /usr/share/munin/plugins/snmp__if_multi       /etc/munin/plugins/snmp_${host}_if_multi
