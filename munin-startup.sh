@@ -71,8 +71,6 @@ echo ""
 
 echo "Installing remaining plugins..."
 ln -s /munin-plugins/mikrotikcapsman_               /etc/munin/plugins/mikrotikcapsman_coors
-ln -s /munin-plugins/ping6_                         /etc/munin/plugins/ping6_ipv6.google.com
-ln -s /munin-plugins/ping6_                         /etc/munin/plugins/ping6_mirrors.rit.edu
 ln -s /usr/share/munin/plugins/snmp__print_pages    /etc/munin/plugins/snmp_milwaukees-best_print_pages
 
 echo "Done!"
