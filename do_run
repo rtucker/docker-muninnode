@@ -4,9 +4,9 @@
 
 if [ "$1" = "killit" ]
 then
-    sudo docker kill $NAME
-    sudo docker rm $NAME
+    docker kill $NAME
+    docker rm $NAME
 fi
 
-sudo docker run --detach --name $NAME --publish=49499:4949 $(gen_docker_args) ${TAG}
+docker run --detach --name $NAME --publish=49499:4949 $(gen_docker_args) ${TAG}
 
