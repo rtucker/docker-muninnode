@@ -1,5 +1,5 @@
-FROM ubuntu:xenial
-MAINTAINER Ryan Tucker <docker@ryantucker.us>
+FROM ubuntu:zesty
+MAINTAINER Rey Tucker <docker@ryantucker.us>
 
 # Resynchronize the package index files 
 RUN apt-get update
